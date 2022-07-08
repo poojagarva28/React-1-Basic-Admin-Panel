@@ -15,10 +15,19 @@ fetch(url)
         <td class="column5">${item.phone}</td>
       </tr>`;
     });
-    let activeRow = document.querySelectorAll("tr");
+    let tr = document.querySelectorAll("tr");
     //   console.log(activeRow);
-    activeRow.forEach((e) => {
-      e.addEventListener("click", function () {
+
+    tr.forEach((rows) => {
+      rows.addEventListener("click", function () {
+        rows.className = "data-row";
+        // activeRow.classList.remove("active");
+        var activeEle = document.querySelector(".active");
+        if (activeEle === null) {
+          this.classList.add("active");
+        } else {
+          activeEle.classList.remove("active");
+        }
         this.classList.add("active");
         //   console.log(this.firstElementChild.innerText);
         let selectedId = this.firstElementChild.innerText;
@@ -26,7 +35,6 @@ fetch(url)
         res.map((item) => {
           //   console.log(selectedId, item.id);
           if (selectedId == item.id) {
-            console.log(true);
             infoBox.innerHTML = `<div><b>User selected:</b> ${item.firstName} ${item.lastName}</div>
           <div>
               <b>Description: </b>
@@ -44,6 +52,7 @@ fetch(url)
           }
         });
       });
+      rows.classList.remove("active");
     });
   })
   .catch((err) => {
@@ -56,9 +65,8 @@ searchItem.addEventListener("input", function (e) {
   let tr = document.getElementsByTagName("tr");
   let tableContent = "";
   for (let i = 1; i < tr.length; i++) {
-    tableContent += tr[i].textContent;
     // console.log(tr[i].innerText.includes(e.target.value));
-    if (tr[i].innerText.includes(e.target.value)) {
+    if (tr[i].innerText.toLowerCase().includes(e.target.value.toLowerCase())) {
       tr[i].style.display = "";
     } else {
       tr[i].style.display = "none";
